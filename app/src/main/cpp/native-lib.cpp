@@ -47,7 +47,7 @@ void rst_handle(){
     local_sockfd = 0;
 
     // sleep 3s to reconnect
-    std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+//    std::this_thread::sleep_for(std::chrono::milliseconds(3000));
 
     // get a new fd and reconnect
     local_sockfd = socket(AF_INET,SOCK_STREAM,0);
@@ -61,7 +61,7 @@ void rst_handle(){
     ev.data.fd = local_sockfd;
     ev.events = EPOLLIN;
     epoll_ctl(epfd,EPOLL_CTL_ADD,local_sockfd,&ev);
-    LOGI("reconnect ok!");
+    LOGI("reconnect finished!");
 }
 
 
@@ -131,13 +131,16 @@ void service_thread(int op, int time){
             std::string hdata = "h";
             hdata.append(1399, 'h');
             send(local_sockfd , hdata.c_str() ,hdata.size(), 0);
+            LOGI("send heartbeat!");
             loseConnect = true;
         }
         for(int i = 0;i < evtnum ; i++){
             loseConnect = false;
             recvn = recv(evlist[i].data.fd,recvbuffer,4096,0);
-            if (recvbuffer[0] == 'h')
+            if (recvbuffer[0] == 'h') {
+                LOGI("recv heartBeat echo!");
                 continue;
+            }
             //cout<<recvn<<endl;
             uint64_t recvTime = getMicros();
             if(recvn > 30){

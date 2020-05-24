@@ -14,12 +14,13 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (!isNetworkConnected(context))
-            return;
-        Toast.makeText(context, "changeNetwork!", Toast.LENGTH_LONG);
-        //有连接的时候触发，加上判断逻辑
-        System.out.println("change!!!");
-        reset();
+            System.out.println(System.currentTimeMillis());
+            if (!isNetworkConnected(context))
+                return;
+            Toast.makeText(context, "changeNetwork!", Toast.LENGTH_LONG);
+            //有连接的时候触发，加上判断逻辑
+            System.out.println("Network Changed!");
+            reset();
     }
 
     public static boolean isNetworkConnected(Context context) {
