@@ -21,7 +21,7 @@ import com.hb.dialog.myDialog.MyImageMsgDialog;
 
 public class MainActivity extends AppCompatActivity {
 
-    final String IP = "49.4.51.131";
+    final String IP = "49.4.5.166";
     private void getPermission(){
         if(PermissionChecker.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)==PermissionChecker.PERMISSION_DENIED){
             ActivityCompat.requestPermissions(this, new String[]{

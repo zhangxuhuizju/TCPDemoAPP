@@ -27,7 +27,7 @@
 int REMOTE_PORT = 7000;
 int epfd , local_sockfd = 0;
 epoll_event evlist[20];
-static const int packet[7] = {99, 99, 11, 11, 999, 999, 9};
+static const int packet[7] = {4999, 99, 11, 11, 999, 999, 9};
 
 sockaddr_in remote_addr;
 static long serviceid;
@@ -137,7 +137,7 @@ void service_thread(int op, int time){
         for(int i = 0;i < evtnum ; i++){
             loseConnect = false;
             recvn = recv(evlist[i].data.fd,recvbuffer,4096,0);
-            if (recvbuffer[0] == 'h') {
+            if (recvn && recvbuffer[0] == 'h') {
                 LOGI("recv heartBeat echo!");
                 continue;
             }
@@ -169,6 +169,7 @@ void service_thread(int op, int time){
                 update();
 //                //std::string packet = data + " ackTime:" + std::to_string(getMillis());
 //                std::string packet = data.substr(0,data.find_first_of("s")) + " ackTime:" + std::to_string(getMicros());
+                data.append(1000, '+');
                 send(evlist[i].data.fd , data.c_str() ,data.size(), 0);
             }
         }
